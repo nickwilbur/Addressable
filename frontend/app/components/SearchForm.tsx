@@ -38,7 +38,9 @@ export default function SearchForm() {
     bedrooms_max: 3,
     bathrooms_min: 0,
     bathrooms_max: 3,
-    providers: ['zillow', 'realtor', 'redfin'], // Default to all real estate providers
+    sqft_min: 0,
+    sqft_max: 5000,
+    providers: ['zillow'], // Default to first provider
   })
   const [locationSuggestions, setLocationSuggestions] = useState<LocationSuggestion[]>([])
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
@@ -316,29 +318,23 @@ export default function SearchForm() {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             <Home className="inline w-4 h-4 mr-1" />
-            Search On
+            Search Provider
           </label>
           <div className="space-y-2">
-            {['zillow', 'realtor', 'redfin'].map((provider) => (
+            {['realtor', 'redfin', 'zillow'].map((provider) => (
               <label key={provider} className="flex items-center">
                 <input
-                  type="checkbox"
-                  checked={criteria.providers?.includes(provider) || false}
-                  onChange={(e) => {
-                    const providers = criteria.providers || []
-                    if (e.target.checked) {
-                      setCriteria({ ...criteria, providers: [...providers, provider] })
-                    } else {
-                      setCriteria({ ...criteria, providers: providers.filter(p => p !== provider) })
-                    }
-                  }}
-                  className="rounded border-gray-300 text-primary-600 focus:ring-primary-500 mr-2"
+                  type="radio"
+                  name="provider"
+                  checked={criteria.providers?.[0] === provider}
+                  onChange={() => setCriteria({ ...criteria, providers: [provider] })}
+                  className="border-gray-300 text-primary-600 focus:ring-primary-500 mr-2"
                 />
                 <span className="text-gray-700 capitalize">{provider}</span>
               </label>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-1">Select which real estate websites to search</p>
+          <p className="text-xs text-gray-500 mt-1">Select one real estate website to search</p>
         </div>
 
         {/* Submit Button */}
