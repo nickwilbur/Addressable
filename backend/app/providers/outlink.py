@@ -110,12 +110,11 @@ class OutlinkProvider(Provider):
     
     def _build_redfin_url(self, criteria: SearchCriteria) -> str:
         """Build Redfin search URL."""
-        # Redfin uses a different URL structure
-        base_url = "https://www.redfin.com/city/"
-        
-        # For simplicity, we'll use the location-based search
+        # Redfin uses city/state format for URLs
         location_encoded = urllib.parse.quote(criteria.location)
-        search_url = f"https://www.redfin.com/zipcode/19104/filter/viewport=39.96112:39.93364:-75.17647:-75.21048"
+        
+        # Build the base URL with location
+        search_url = f"https://www.redfin.com/city/{location_encoded}"
         
         # Add filters as query parameters
         query_params = []
@@ -132,9 +131,13 @@ class OutlinkProvider(Provider):
             query_params.append(f"min_baths={int(criteria.bathrooms_min)}")
         if criteria.bathrooms_max:
             query_params.append(f"max_baths={int(criteria.bathrooms_max)}")
+        if criteria.sqft_min:
+            query_params.append(f"min_sqft={criteria.sqft_min}")
+        if criteria.sqft_max:
+            query_params.append(f"max_sqft={criteria.sqft_max}")
         
         if query_params:
-            search_url += "?" + "&".join(query_params)
+            search_url += "/filter?" + "&".join(query_params)
         
         return search_url
     
