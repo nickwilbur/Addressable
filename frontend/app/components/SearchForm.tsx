@@ -40,7 +40,7 @@ export default function SearchForm() {
     bathrooms_max: 3,
     sqft_min: 0,
     sqft_max: 5000,
-    providers: ['zillow'], // Default to first provider
+    providers: ['realtor'], // Default to realtor
   })
   const [locationSuggestions, setLocationSuggestions] = useState<LocationSuggestion[]>([])
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
